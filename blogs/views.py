@@ -44,6 +44,19 @@ def blogs(request, slug):
     }
     return render(request, 'blogs.html', context)
 
+
+def delete_comment(request, comment_id):
+    if request.method == "POST":
+        comment = get_object_or_404(Comment, id=comment_id)
+
+        if request.user == comment.user:
+            slug = comment.blog.slug
+            comment.delete()
+            return redirect('blogs', slug=slug)
+
+    return redirect('/')
+
+
 def search(request):
     keyword = request.GET.get('keyword')
     blogs = Blog.objects.filter(Q(title__icontains=keyword) | Q(short_description__icontains=keyword) | Q(blog_body__icontains=keyword), status='Published')

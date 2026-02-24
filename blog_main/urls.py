@@ -28,6 +28,8 @@ urlpatterns = [
     path('blogs/<slug:slug>/', BlogsView.blogs, name='blogs'),
     # Search endpoint
     path('blogs/search/', BlogsView.search, name='search'),
+    # deleting the comment in a blog 
+    path('delete-comment/<int:comment_id>/', BlogsView.delete_comment, name='delete_comment'),
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
