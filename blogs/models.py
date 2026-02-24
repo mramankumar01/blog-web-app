@@ -1,14 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.functions import Lower
 
 # Create your models here.
 class Category(models.Model):
-    category_name = models.CharField(max_length=50, unique=True)
+    # category_name = models.CharField(max_length=50, unique=True)
+    category_name = models.CharField(max_length=50) # Remove unique=True here if using constraints below
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = 'categories'
+        constraints = [
+            models.UniqueConstraint(
+                Lower('category_name'), 
+                name='unique_category_name_ci',
+                violation_error_message="This category already exists."
+            )
+        ]
+
+    def save(self, *args, **kwargs):
+        # Clean the data before it hits the DB
+        self.category_name = self.category_name.title()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.category_name
