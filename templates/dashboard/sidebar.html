@@ -5,7 +5,9 @@
         {% if perms.auth.view_user %}
         <a href="{% url 'users' %}" class="nav-link text-dark {% if '/users/' in request.path %}bg-warning{% endif %}">Users</a>
         {% endif %}
+        {% if user.is_superuser or 'Manager' in user.groups.all or 'Editor' in user.groups.all|join:", " %}
         <a href="{% url 'categories' %}" class="nav-link text-dark {% if '/categories/' in request.path %}bg-warning{% endif %}">Categories</a>
+        {% endif %}
         <a href="{% url 'posts' %}" class="nav-link text-dark {% if '/posts/' in request.path %}bg-warning{% endif %}">Posts</a>
         <a href="{% url 'logout' %}" class="nav-link text-dark">Logout</a>
     </div>

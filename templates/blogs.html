@@ -34,7 +34,7 @@
                                     <div class="d-flex align-items-center gap-2 small text-muted">
                                         <span>By {{ comment.user }}</span>
                                         <span>&nbsp;| {{ comment.created_at | timesince }} ago |&nbsp;</span>
-                                        {% if user == comment.user %}
+                                        {% if user == comment.user or user.is_superuser or 'Manager' in user.groups.all or 'Editor' in user.groups.all|join:", " %}
                                             <form action="{% url 'delete_comment' comment.id %}" method="POST" class="d-inline m-0">
                                                 {% csrf_token %}
                                                 <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
